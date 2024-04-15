@@ -98,17 +98,21 @@ public class UsuarioDAOImplementacion implements UsuarioDAO{
 			preparedStatement.setString(6, usuario.getDomicilio());
 			preparedStatement.setString(7, usuario.getNumeroTelefono());
 			preparedStatement.setString(8, usuario.getCurp());
+			preparedStatement.executeUpdate();
+			
+			cerrarConexion();
+			return VERDADERO;			
 		}
 		
 		return 0;
 	}
 
 	public Usuario consultar(String criterio) throws SQLException {
-		return null;
+		return null; /* Implementacion pendiente */
 	}
 
 	public List<Usuario> consultarTodo() throws SQLException {
-		return null;
+		return null; /* Implementacion pendiente */
 	}
 
 	

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.componentes.Cita;
 
-public class CitaDAOImplementacion implements CitaDAO{
+public class CitaDAOImplementacion implements CitaDAO {
 	
 	public int insertar(Cita cita) throws SQLException{
 		return 0;

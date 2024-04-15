@@ -4,13 +4,14 @@ public class Cita {
 
 	private Paciente paciente;
 	private Doctor doctor;
-	private Fecha fecha;
-	private String estatus;
+	private String fecha;
+	private String estatus;	
 	
-	public Cita(Paciente p, Doctor d, Fecha f) {
+	public Cita(Paciente p, Doctor d, String fecha) {
 		this.paciente = p;
 		this.doctor = d;
-		this.fecha = f;
+		this.fecha = fecha;
+		estatus = "activa";
 	}
 	
 	public void setPaciente(Paciente p) {
@@ -21,15 +22,27 @@ public class Cita {
 		this.doctor = d;
 	}
 	
-	public void setFecha(Fecha f) {
-		this.fecha = f;
-	}
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}	
 	
 	public void setEstatus(String e) {
 		this.estatus = e;
 	}
 	
-	public String getInformacionCita() { // pendiente de implementar
-		return null;
+	public Paciente getPaciente() {
+		return this.paciente;
+	}
+	
+	public Doctor getDoctor() {
+		return this.doctor;
+	}
+	
+	public String getFecha() {
+		return this.fecha;
+	}
+	
+	public String getEstatus() {
+		return this.estatus;
 	}
 }

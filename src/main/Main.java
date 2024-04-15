@@ -3,10 +3,7 @@ package main;
 //import com.ventanas.*;
 import com.componentes.*;
 import com.dataAccessObject.EnfermedadDAOImplementacion;
-import com.dataAccessObject.SignoDAOImplementacion;
-import com.dataAccessObject.SintomaDAOImplementacion;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
