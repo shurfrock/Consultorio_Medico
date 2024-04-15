@@ -152,4 +152,8 @@ public class Usuario implements ConstantesComponentes{
 	public String getUsername() {
 		return this.username;
 	}
+	
+	public String getPassword() {
+		return this.password;
+	}
 }

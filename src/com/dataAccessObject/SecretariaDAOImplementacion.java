@@ -1,5 +1,8 @@
 package com.dataAccessObject;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -7,33 +10,38 @@ import com.componentes.Secretaria;
 
 public class SecretariaDAOImplementacion implements SecretariaDAO{
 
-	@Override
+	private Connection conexion;
+	private PreparedStatement preparedStatement;
+	private ResultSet resultSet;
+	private String sql;
+	
 	public int insertar(Secretaria secretaria) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		conexion = Database.getConnection();
+		
+		if(conexion != null) {
+			
+			UsuarioDAOImplementacion DAO = new UsuarioDAOImplementacion(); 
+			DAO.insertar(secretaria);
+			
+		}
+		
+		return FALSO;
 	}
 
-	@Override
 	public int eliminar(Secretaria secretaria) throws SQLException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int actualizar(Secretaria secretaria) throws SQLException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public Secretaria consultar(String criterio) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<Secretaria> consultarTodo() throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

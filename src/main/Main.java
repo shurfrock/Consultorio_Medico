@@ -1,14 +1,41 @@
 package main;
-import com.ventanas.*;
+
+//import com.ventanas.*;
+import com.componentes.*;
+import com.dataAccessObject.EnfermedadDAOImplementacion;
+import com.dataAccessObject.SignoDAOImplementacion;
+import com.dataAccessObject.SintomaDAOImplementacion;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 	
-	public static void main(String args[]) {
-		VentanaPrinDoctor secretaria = new VentanaPrinDoctor();
+	public static void main(String args[]) throws SQLException{
+	
 		
-		secretaria.setVisible(true);
+		EnfermedadDAOImplementacion DAO = new EnfermedadDAOImplementacion();
+		List<Enfermedad> enfermedades;
 		
-		/*Inicio inicioSesion = new Inicio();
-		inicioSesion.setVisible(true);*/
+		enfermedades = DAO.consultarTodo();
+		
+		// mostrar todas las enfermedades
+		for(Enfermedad enfermedad : enfermedades) {
+			System.out.println("Enfermedad: " + enfermedad.getNombre());
+			System.out.print("signos: ");
+			
+			for(Signo signo : enfermedad.getSignos()) {
+				System.out.print(signo.getNombre() + ", ");
+			}
+			System.out.print("\n");
+			
+			System.out.print("sintomas: ");
+			
+			for(Sintoma sintoma : enfermedad.getSintomas()) {
+				System.out.print(sintoma.getNombre() + ", ");
+			}
+			
+			System.out.println("\n\n");
+		}
 	}
 }

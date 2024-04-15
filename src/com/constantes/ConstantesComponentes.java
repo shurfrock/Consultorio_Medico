@@ -11,4 +11,6 @@ public interface ConstantesComponentes {
 	public static final String NUMERO_DEFECTO = "3151253050";
 	public static final String CEDULA_DEFECTO = "2D5FAD6A";
 	public static final short TAM_MAX_CEDULA = 8;
+	public static final int VERDADERO = 1;
+	public static final int FALSO = 0;
 }
