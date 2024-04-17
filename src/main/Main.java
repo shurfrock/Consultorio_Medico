@@ -4,11 +4,9 @@ import com.ventanas.*;
 public class Main {
 	
 	public static void main(String args[]) {
-		VentanaPrinDoctor secretaria = new VentanaPrinDoctor();
+		VentanaPrinSecretaria secretaria = new VentanaPrinSecretaria();
 		
 		secretaria.setVisible(true);
 		
-		/*Inicio inicioSesion = new Inicio();
-		inicioSesion.setVisible(true);*/
 	}
 }
