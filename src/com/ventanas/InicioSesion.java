@@ -31,7 +31,7 @@ public class InicioSesion extends JFrame implements ActionListener{
 
 		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 780, 491);
+		setBounds(100, 100, 834, 541);
 		
 		/* Declaración e Instanciacion de objetos */
 		
@@ -71,7 +71,7 @@ public class InicioSesion extends JFrame implements ActionListener{
 				
 					/** Panel lateral**/
 		panelLateral.setBackground(new Color(50, 81, 205));
-		panelLateral.setBounds(368, 0, 396, 452);
+		panelLateral.setBounds(368, 0, 440, 502);
 		panelLateral.setLayout(null);		
 		panelLateral.setBorder(null);
 		

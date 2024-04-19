@@ -3,12 +3,11 @@ package com.ventanas;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Cursor;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.componentesVisuales.MyJPasswordField;
@@ -26,7 +25,8 @@ public class Inicio extends JFrame implements Colores, Fonts{
 		
 		super("Inicio de sesión");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1227, 658);
+		setBounds(100, 100, 874, 533);
+		setResizable(false);
 		
 		/* Visual components and panels */
 		
@@ -34,19 +34,18 @@ public class Inicio extends JFrame implements Colores, Fonts{
 		JPanel panelIzquierdo = new JPanel();
 		JLabel imgPanelIzq = new JLabel("");
 		JPanel panelDerecho = new JPanel();
-		JPanel panelSuperior = new JPanel();
-		JLabel txtPrincipal = new JLabel("Inicio de Sesión");
-		JPanel panelContenidoPrincipal = new JPanel();
-		JLabel logoUsuario = new JLabel("");
-		JPanel panelCamposEntrada = new JPanel();
-		JLabel txtUsername = new JLabel("Username");
 		MyJTextField campoUsername = new MyJTextField();
-		JLabel txtPassword = new JLabel("Password");
-		MyJPasswordField campoPassword = new MyJPasswordField();
-		JPanel panelBoton = new JPanel();
-		JPanel btnIngresar = new JPanel();
-		JLabel txtBtnIngresar = new JLabel("Ingresar");
-		JPanel panelInferior = new JPanel();
+		campoUsername.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/usuario.png")));
+		campoUsername.setToolTipText("Ingrese su username");
+		campoUsername.setBounds(76, 160, 293, 35);
+		campoUsername.setFont(FUENTE_SECUNDARIA);
+		campoUsername.setForeground(COLOR_SECUNDARIO);
+		MyJPasswordField compoPassword = new MyJPasswordField();
+		compoPassword.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/clave-de-usuario.png")));
+		compoPassword.setToolTipText("Ingrese su contraseña");
+		compoPassword.setBounds(76, 259, 293, 35);
+		compoPassword.setFont(FUENTE_SECUNDARIA);
+		compoPassword.setForeground(COLOR_SECUNDARIO);
 		
 		/* End components */
 		
@@ -62,101 +61,59 @@ public class Inicio extends JFrame implements Colores, Fonts{
 		imgPanelIzq.setIcon(new ImageIcon(Inicio.class.getResource("/com/imagenes/lock.png")));
 		imgPanelIzq.setHorizontalAlignment(SwingConstants.CENTER);
 		panelIzquierdo.add(imgPanelIzq, BorderLayout.CENTER);
-				
-		panelDerecho.setLayout(new BorderLayout(0, 0));
-		panelSuperior.setLayout(new BorderLayout(0, 0));
-		panelSuperior.setBackground(COLOR_PRINCIPAL);
-		panelSuperior.setPreferredSize(new Dimension(panelDerecho.getWidth(), 100));
-		txtPrincipal.setForeground(COLOR_FONDO);
-		txtPrincipal.setFont(FUENTE_TITULO);
-		txtPrincipal.setHorizontalAlignment(SwingConstants.CENTER);
-		panelSuperior.add(txtPrincipal, BorderLayout.CENTER);
-		
-		panelContenidoPrincipal.setLayout(new BorderLayout(0, 0));
-		panelContenidoPrincipal.setBackground(COLOR_PRINCIPAL);
-				
-		logoUsuario.setIcon(new ImageIcon(Inicio.class.getResource("/com/imagenes/usuario(3).png")));
-		logoUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		logoUsuario.setPreferredSize(new Dimension(200, 150));
-		
-		panelContenidoPrincipal.add(logoUsuario, BorderLayout.NORTH);
-		
-		panelCamposEntrada.setLayout(null);
-		panelCamposEntrada.setBackground(COLOR_PRINCIPAL);
-		txtUsername.setForeground(COLOR_FONDO);
-		txtUsername.setFont(FUENTE_PRINCIPAL);
-		txtUsername.setBounds(94, 36, 466, 29);
-		panelCamposEntrada.add(txtUsername);
-		
-		campoUsername.setFont(FUENTE_SECUNDARIA);
-		campoUsername.setEnabled(true);
-		campoUsername.setEditable(true);
-		campoUsername.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/usuario.png")));
-		campoUsername.setToolTipText("Ingrese su nombre de usuario");
-		campoUsername.setColumns(10);
-		campoUsername.setBounds(94, 65, 501, 40);
-		panelCamposEntrada.add(campoUsername);
-		
-		txtPassword.setForeground(COLOR_FONDO);
-		txtPassword.setFont(FUENTE_PRINCIPAL);
-		txtPassword.setBounds(94, 135, 466, 22);
-		panelCamposEntrada.add(txtPassword);
-		
-		campoPassword.setEnabled(true);
-		campoPassword.setEditable(true);
-		campoPassword.setFont(FUENTE_SECUNDARIA);
-		campoPassword.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/clave-de-usuario.png")));
-		campoPassword.setToolTipText("Ingrese su contraseña");
-		campoPassword.setBounds(94, 159, 501, 40);
-		panelCamposEntrada.add(campoPassword);
-		
-		panelContenidoPrincipal.add(panelCamposEntrada, BorderLayout.CENTER);
-		
-		panelInferior.setBackground(COLOR_PRINCIPAL);
-		panelInferior.setPreferredSize(new Dimension(50, 100));
-		panelInferior.setLayout(new BorderLayout(0, 0));
-				
-		panelBoton.setBackground(COLOR_PRINCIPAL);
-		panelBoton.setPreferredSize(new Dimension(450, 50));
-		panelBoton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		btnIngresar.setBorder(null);
-		btnIngresar.setPreferredSize(new Dimension(120, 35));
-		btnIngresar.setBackground(COLOR_FONDO);
-		btnIngresar.setLayout(new BorderLayout(0, 0));
-		
-		txtBtnIngresar.setToolTipText("Presione para continuar");
-		txtBtnIngresar.setForeground(COLOR_SECUNDARIO);
-		txtBtnIngresar.setHorizontalAlignment(SwingConstants.CENTER);
-		txtBtnIngresar.setFont(FUENTE_PRINCIPAL);
-		btnIngresar.add(txtBtnIngresar, BorderLayout.CENTER);		
-		
-		panelBoton.add(btnIngresar);
-		panelInferior.add(panelBoton, BorderLayout.NORTH);
-		
-		panelDerecho.add(panelSuperior, BorderLayout.NORTH);
-		panelDerecho.add(panelContenidoPrincipal, BorderLayout.CENTER);
-		panelDerecho.add(panelInferior, BorderLayout.SOUTH);
+		panelDerecho.setBackground(COLOR_PRINCIPAL);
 		
 		panelPrincipal.add(panelIzquierdo);
 		panelPrincipal.add(panelDerecho);
-		setContentPane(panelPrincipal);
+		panelDerecho.setLayout(null);
 		
-		/* End of component's configuration */
+		JLabel lblNewLabel = new JLabel("Inicio de sesión");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(93, 41, 251, 52);
+		lblNewLabel.setFont(FUENTE_TITULO);
+		lblNewLabel.setForeground(COLOR_FONDO);
+		panelDerecho.add(lblNewLabel);
 		
+		panelDerecho.add(campoUsername);
+		panelDerecho.add(compoPassword);
 		
-		/* Event handlers */
-
-		txtBtnIngresar.addMouseListener(new MouseAdapter() {
-			@Override
+		JLabel lblNewLabel_1 = new JLabel("Username");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_1.setBounds(76, 127, 107, 22);
+		lblNewLabel_1.setFont(FUENTE_PRINCIPAL);
+		lblNewLabel_1.setForeground(COLOR_FONDO);
+		panelDerecho.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Password");
+		lblNewLabel_2.setBounds(76, 226, 107, 22);
+		lblNewLabel_2.setFont(FUENTE_PRINCIPAL);
+		lblNewLabel_2.setForeground(COLOR_FONDO);
+		panelDerecho.add(lblNewLabel_2);
+		
+		JPanel panel = new JPanel();
+		panel.addMouseListener(new MouseAdapter() {
+			
 			public void mouseEntered(MouseEvent e) {
-				btnIngresar.setBackground(COLOR_MOUSE_OVER);				
+				panel.setBackground(COLOR_MOUSE_OVER);
+				panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 			
-			@Override
 			public void mouseExited(MouseEvent e) {
-				btnIngresar.setBackground(COLOR_FONDO);
+				panel.setBackground(COLOR_FONDO);
 			}
 		});
+		panel.setBounds(161, 374, 135, 33);
+		panel.setBackground(COLOR_FONDO);
+		panelDerecho.add(panel);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_3 = new JLabel("Ingresar");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setForeground(COLOR_SECUNDARIO);
+		lblNewLabel_3.setFont(FUENTE_PRINCIPAL);
+		panel.add(lblNewLabel_3, BorderLayout.CENTER);
+		
+		
+		setContentPane(panelPrincipal);
 	}	
 }

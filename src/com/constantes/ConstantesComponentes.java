@@ -13,4 +13,10 @@ public interface ConstantesComponentes {
 	public static final short TAM_MAX_CEDULA = 8;
 	public static final int VERDADERO = 1;
 	public static final int FALSO = 0;
+	public static final String INFORMACION_CUENTA = "informacion de la cuenta";
+	public static final String PACIENTES= "pacientes";
+	public static final String CITAS = "citas";
+	public static final String SALIR = "salir";
+	public static final String REGRESAR = "regresar";
+	
 }
