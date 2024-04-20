@@ -7,13 +7,13 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+import javax.swing.JSpinner;
 
 public class RegistrarPaciente extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField Apellidos;
 	private JTextField Nombre;
-	private JTextField Edad;
 	private JTextField txtEstadoCivilDel;
 	private JTextField txtDomicilioDelPaciente;
 	private JTextField txtCurpDelPaciente;
@@ -54,13 +54,6 @@ public class RegistrarPaciente extends JPanel {
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1_1.setBounds(23, 50, 145, 22);
 		add(lblNewLabel_1_1);
-		
-		Edad = new JTextField();
-		Edad.setHorizontalAlignment(SwingConstants.CENTER);
-		Edad.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		Edad.setColumns(10);
-		Edad.setBounds(23, 217, 110, 30);
-		add(Edad);
 		
 		JLabel lblNewLabel_1_2 = new JLabel("Edad");
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -127,8 +120,14 @@ public class RegistrarPaciente extends JPanel {
 		add(Otro);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnGuardar.setBounds(260, 553, 119, 37);
 		add(btnGuardar);
+		
+		JSpinner Edad = new JSpinner();
+		Edad.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		Edad.setBounds(23, 221, 110, 26);
+		add(Edad);
 
 	}
 }

@@ -10,8 +10,8 @@ import javax.swing.JButton;
 public class ConsultarPaciente extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textNombrePaciente;
+	private JTextField textCURPPaciente;
 
 	/**
 	 * Create the panel.
@@ -31,18 +31,19 @@ public class ConsultarPaciente extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnConsultar.setBounds(230, 288, 123, 36);
 		add(btnConsultar);
 		
-		textField = new JTextField();
-		textField.setBounds(71, 135, 445, 30);
-		add(textField);
-		textField.setColumns(10);
+		textNombrePaciente = new JTextField();
+		textNombrePaciente.setBounds(71, 135, 445, 30);
+		add(textNombrePaciente);
+		textNombrePaciente.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(71, 227, 445, 30);
-		add(textField_1);
+		textCURPPaciente = new JTextField();
+		textCURPPaciente.setColumns(10);
+		textCURPPaciente.setBounds(71, 227, 445, 30);
+		add(textCURPPaciente);
 		
 		JLabel lblNewLabel_1 = new JLabel("Nombre del paciente");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
