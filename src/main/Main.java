@@ -1,17 +1,15 @@
 package main;
 
 import java.sql.SQLException;
-
-//import com.ventanas.*;
 import com.ventanas.*;
 
 public class Main {
 	
 	public static void main(String args[]) throws SQLException {
 		
-		VentanaPrinSecretaria ventana;
+		VentanaPrinDoctor ventana;
 		
-		ventana = new VentanaPrinSecretaria();
+		ventana = new VentanaPrinDoctor();
 		
 		
 		ventana.setVisible(true);

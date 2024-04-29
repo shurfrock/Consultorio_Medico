@@ -1,17 +1,14 @@
 package com.ventanas;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import com.constantes.*;
 
@@ -19,7 +16,6 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 
 	private static final long serialVersionUID = 1L;
 	VentanaPrinSecretaria ventana;
-	private boolean clicked;
 	private Listener listener;
 
 	public PanelMenuPrinSecretaria() {
@@ -32,12 +28,16 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 		JLabel iconoMenu = new JLabel();
 		JPanel panelIconoInfoCuenta = new JPanel();
 		JLabel iconoUsuario = new JLabel();
+		iconoUsuario.setIcon(new ImageIcon(PanelMenuPrinSecretaria.class.getResource("/com/imagenes/userIcon.png")));
 		JPanel panelIconoPacientes = new JPanel();
 		JLabel iconoPacientes = new JLabel();
+		iconoPacientes.setIcon(new ImageIcon(PanelMenuPrinSecretaria.class.getResource("/com/imagenes/pacientesIcon.png")));
 		JPanel panelIconoCitas = new JPanel();
 		JLabel iconoCitas = new JLabel();
+		iconoCitas.setIcon(new ImageIcon(PanelMenuPrinSecretaria.class.getResource("/com/imagenes/calendar.png")));
 		JPanel panelIconoSalir = new JPanel();
 		JLabel iconoSalir = new JLabel();
+		iconoSalir.setIcon(new ImageIcon(PanelMenuPrinSecretaria.class.getResource("/com/imagenes/salirIcon.png")));
 		JPanel ContenidoPanel = new JPanel();
 		JPanel panelInfoCuenta = new JPanel();
 		JLabel txtInfoCuenta = new JLabel("Información de la cuenta");
@@ -47,7 +47,6 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 		JLabel txtCitas = new JLabel("Citas");
 		JPanel panelSalir = new JPanel();
 		JLabel txtSalir = new JLabel("Salir");
-		clicked = false;
 		
 		panelIconos.setBackground(COLOR_BARRA_LATERAL);
 		panelIconos.setPreferredSize(new Dimension(55, 0));
@@ -57,7 +56,7 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 		panelIconoMenu.setBounds(0, 0, 55, 39);
 		panelIconoMenu.setLayout(new BorderLayout(0, 0));
 		
-		iconoMenu.setIcon(new ImageIcon(VentanaPrinSecretaria.class.getResource("/com/imagenes/menu.png")));
+		iconoMenu.setIcon(new ImageIcon(PanelMenuPrinSecretaria.class.getResource("/com/imagenes/menu-bar.png")));
 		iconoMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		panelIconoMenu.add(iconoMenu, BorderLayout.CENTER); /* agregar el icono de menu al panel */
 		
@@ -145,17 +144,7 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 		panelIconoMenu.addMouseListener(new MouseAdapter() {
 		
 			public void mouseClicked(MouseEvent e) {
-				
-				Container padre = PanelMenuPrinSecretaria.this.getParent();
-				
-				if(!clicked) {					
-					padre.setPreferredSize(new Dimension(55,0));
-					clicked = true;
-				}else {
-					padre.setPreferredSize(new Dimension(265, getHeight()));
-					clicked = false;
-				}
-				SwingUtilities.updateComponentTreeUI(PanelMenuPrinSecretaria.this);
+				onOptionSelected(OCULTAR_MENU_LATERAL);
 			}
 			
 			public void mouseEntered(MouseEvent e) {				
@@ -214,6 +203,10 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 				restaurar(txtCitas, panelCitas);
 				resetearCursor(panelCitas);
 			}
+			
+			public void mouseClicked(MouseEvent e) {
+				onOptionSelected(CITAS);
+			}
 		});		
 		
 		panelSalir.addMouseListener(new MouseAdapter() {
@@ -226,6 +219,10 @@ public class PanelMenuPrinSecretaria extends JPanel implements Fonts, Colores, C
 			public void mouseExited(MouseEvent e) {
 				restaurar(txtSalir, panelSalir);
 				resetearCursor(panelSalir);
+			}
+			
+			public void mouseClicked(MouseEvent e) {
+				onOptionSelected(SALIR);
 			}
 		});		
 	}

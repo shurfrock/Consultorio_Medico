@@ -90,8 +90,78 @@ public class PacienteDAOImplementacion implements PacienteDAO {
 		return FALSO;
 	}
 
-	public Paciente consultar(String criterio) throws SQLException {
-		return null; /* implementacion pendiete  */
+	public Paciente consultar(String curp) throws SQLException {
+		
+		conexion = Database.getConnection();
+		
+		if(conexion != null) {
+			sql = "SELECT * FROM Paciente WHERE curp = ?;";
+			preparedStatement = conexion.prepareStatement(sql);
+			preparedStatement.setString(1, curp);
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()) {
+				
+				Paciente paciente;
+				String nombre, apellido, estadoCivil, domicilio, curpX;
+				char sexo;
+				short edad;
+				
+				nombre = resultSet.getString("nombre");
+				apellido = resultSet.getString("apellido");
+				estadoCivil = resultSet.getString("estado_civil");
+				domicilio = resultSet.getString("domicilio");
+				curpX = resultSet.getString("curp");
+				sexo = resultSet.getString("sexo").charAt(0);
+				edad = (short)resultSet.getInt("edad");
+				
+				paciente = new Paciente(nombre, apellido, edad, sexo, estadoCivil, domicilio, curpX, curpX);
+				
+				cerrarConexion();
+				return paciente;
+			}
+		}
+		
+		return null;
+	}
+	
+	public List<Paciente> buscarPaciente(String nombre) throws SQLException {
+		
+		conexion = Database.getConnection();
+		
+		if(conexion != null) {
+			
+			Paciente paciente;
+			List<Paciente> pacientes;
+			String nombreX, apellido, estadoCivil, domicilio, curp;
+			char sexo;
+			short edad;
+			
+			sql = "SELECT * FROM Paciente WHERE nombre LIKE ?";
+			preparedStatement = conexion.prepareStatement(sql);
+			preparedStatement.setString(1, nombre + "%");
+			resultSet = preparedStatement.executeQuery();
+			
+			pacientes = new ArrayList<>();
+			while(resultSet.next()) {
+				nombreX = resultSet.getString("nombre");
+				apellido = resultSet.getString("apellido");
+				sexo = resultSet.getString("sexo").charAt(0);
+				edad = (short)resultSet.getInt("edad");
+				estadoCivil = resultSet.getString("estado_civil");
+				domicilio = resultSet.getString("domicilio");
+				curp = resultSet.getString("curp");
+				
+				paciente = new Paciente(nombreX, apellido, edad, sexo, estadoCivil, domicilio, curp, curp);
+				
+				pacientes.add(paciente);
+			}
+			
+			cerrarConexion();
+			return pacientes;
+		}
+		
+		return null;
 	}
 
 	public List<Paciente> consultarTodo() throws SQLException {

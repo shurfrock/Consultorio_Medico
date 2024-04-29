@@ -3,7 +3,6 @@ package com.ventanas;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Cursor;
 import com.constantes.*;
 import javax.swing.JLabel;
@@ -15,8 +14,7 @@ import javax.swing.ImageIcon;
 public class PanelPacientes extends JPanel implements Fonts, Colores, ConstantesComponentes {
 
 	private static final long serialVersionUID = 1L;
-	private Listener listener;	
-	private boolean clicked;
+	private Listener listener;
 
 	public PanelPacientes() {
 		setPreferredSize(new Dimension(265, 520));
@@ -32,25 +30,48 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 		setEstiloPanelIcon(panelIconMenu,0 ,0, 55, 39);
 		panelIconos.add(panelIconMenu);
 		
+		JLabel iconoMenu = new JLabel("");
+		iconoMenu.setIcon(new ImageIcon(PanelPacientes.class.getResource("/com/imagenes/menu-bar.png")));
+		iconoMenu.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIconMenu.add(iconoMenu, BorderLayout.CENTER);
+		
 		JPanel panelIconRegistrar = new JPanel();
 		setEstiloPanelIcon(panelIconRegistrar,0 ,49, 55, 39);
+		panelIconos.add(panelIconRegistrar);
+		
+		JLabel iconoRegistrarPaciente = new JLabel("");
+		iconoRegistrarPaciente.setIcon(new ImageIcon(PanelPacientes.class.getResource("/com/imagenes/add-user.png")));
+		iconoRegistrarPaciente.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIconRegistrar.add(iconoRegistrarPaciente, BorderLayout.CENTER);
 		panelIconos.add(panelIconRegistrar);
 		
 		JPanel panelIconConsultar = new JPanel();
 		setEstiloPanelIcon(panelIconConsultar,0 ,98, 55, 39);
 		panelIconos.add(panelIconConsultar);
 		
+		JLabel iconoConsultarPaciente = new JLabel("");
+		iconoConsultarPaciente.setIcon(new ImageIcon(PanelPacientes.class.getResource("/com/imagenes/buscar.png")));
+		iconoConsultarPaciente.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIconConsultar.add(iconoConsultarPaciente, BorderLayout.CENTER);
+		panelIconos.add(panelIconRegistrar);
+		
 		JPanel panelIconListar = new JPanel();
 		setEstiloPanelIcon(panelIconListar,0 ,147, 55, 39);
+		panelIconos.add(panelIconListar);
+		
+		JLabel iconoListarPacientes = new JLabel("");
+		iconoListarPacientes.setIcon(new ImageIcon(PanelPacientes.class.getResource("/com/imagenes/checklist.png")));
+		iconoListarPacientes.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIconListar.add(iconoListarPacientes, BorderLayout.CENTER);
 		panelIconos.add(panelIconListar);
 		
 		JPanel panelIconRegresar = new JPanel();
 		setEstiloPanelIcon(panelIconRegresar,0 ,196, 55, 39);
 		
-		JLabel iconoMenu = new JLabel("");
-		iconoMenu.setIcon(new ImageIcon(PanelPacientes.class.getResource("/com/imagenes/menu.png")));
-		iconoMenu.setHorizontalAlignment(SwingConstants.CENTER);
-		panelIconMenu.add(iconoMenu, BorderLayout.CENTER);
+		JLabel iconoRegresar = new JLabel("");
+		iconoRegresar.setIcon(new ImageIcon(PanelPacientes.class.getResource("/com/imagenes/previous.png")));
+		iconoRegresar.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIconRegresar.add(iconoRegresar, BorderLayout.CENTER);
 		panelIconos.add(panelIconRegresar);
 		
 		JPanel panelMenu = new JPanel();
@@ -89,8 +110,6 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 		JLabel lblNewLabel_3 = new JLabel("Regresar");
 		setEstilosEtiqueta(lblNewLabel_3);		
 		panel_10.add(lblNewLabel_3, BorderLayout.CENTER);
-	
-		clicked = false;
 		
 		/* Controladores de eventos */
 		panel_7.addMouseListener(new MouseAdapter() {
@@ -103,6 +122,10 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 			public void mouseExited(MouseEvent e) {
 				restaurar(lblNewLabel, panel_7);
 				resetearCursor(panel_7);
+			}
+			
+			public void mouseClicked(MouseEvent e) {				
+				onOptionSelected(REGISTRAR_PACIENTE);
 			}
 		});
 		
@@ -117,6 +140,10 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 				restaurar(lblNewLabel_1, panel_8);
 				resetearCursor(panel_8);
 			}
+			
+			public void mouseClicked(MouseEvent e) {
+				onOptionSelected(CONSULTAR_PACIENTE);
+			}
 		});
 		
 		panel_9.addMouseListener(new MouseAdapter() {
@@ -129,6 +156,10 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 			public void mouseExited(MouseEvent e) {
 				restaurar(lblNewLabel_2, panel_9);
 				resetearCursor(panel_9);
+			}
+			
+			public void mouseClicked(MouseEvent e) {
+				onOptionSelected(LISTAR_PACIENTES);
 			}
 		});
 
@@ -161,19 +192,7 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 			}
 			
 			public void mouseClicked(MouseEvent e) {
-				
-				Container padre = PanelPacientes.this.getParent();
-				
-				if(!clicked) {
-					padre.setPreferredSize(new Dimension(55, 0));
-					clicked = true;
-				}else {
-					padre.setPreferredSize(new Dimension(265,0));
-					clicked = false;
-				}
-								
-				padre.revalidate();
-				padre.repaint();
+				onOptionSelected(OCULTAR_MENU_LATERAL);
 			}
 		});
 	}
@@ -224,5 +243,5 @@ public class PanelPacientes extends JPanel implements Fonts, Colores, Constantes
 	
 	private void resetearCursor(JPanel panel) {
 		panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	}	
+	}
 }

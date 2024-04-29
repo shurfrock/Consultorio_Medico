@@ -35,13 +35,13 @@ public class Inicio extends JFrame implements Colores, Fonts{
 		JLabel imgPanelIzq = new JLabel("");
 		JPanel panelDerecho = new JPanel();
 		MyJTextField campoUsername = new MyJTextField();
-		campoUsername.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/usuario.png")));
+		campoUsername.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/usuarioIcon.png")));
 		campoUsername.setToolTipText("Ingrese su username");
 		campoUsername.setBounds(76, 160, 293, 35);
 		campoUsername.setFont(FUENTE_SECUNDARIA);
 		campoUsername.setForeground(COLOR_SECUNDARIO);
 		MyJPasswordField compoPassword = new MyJPasswordField();
-		compoPassword.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/clave-de-usuario.png")));
+		compoPassword.setIcono(new ImageIcon(Inicio.class.getResource("/com/imagenes/passwordIcon.png")));
 		compoPassword.setToolTipText("Ingrese su contraseña");
 		compoPassword.setBounds(76, 259, 293, 35);
 		compoPassword.setFont(FUENTE_SECUNDARIA);
