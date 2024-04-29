@@ -14,10 +14,20 @@ import javax.swing.ImageIcon;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.border.SoftBevelBorder;
 
 import com.componentesVisuales.MyJPasswordField;
 import com.componentesVisuales.MyJTextField;
+import com.dataAccessObject.*;
+import com.mysql.cj.xdevapi.Statement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class InicioSesion extends JFrame implements ActionListener{
 
@@ -38,19 +48,6 @@ public class InicioSesion extends JFrame implements ActionListener{
 		JPanel panelPrincipal = new JPanel();
 		JPanel panelLateral = new JPanel();
 		JPanel panelBoton = new JPanel();
-		
-		panelBoton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				panelBoton.setBackground(new Color(157,197,255));
-				panelBoton.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {				
-				panelBoton.setBackground(new Color(255,255,255));
-				panelBoton.setBorder(null);
-			}
-		});
 		
 		JLabel iconoLogin = new JLabel("");
 		JLabel encabezado = new JLabel("Inicio de Sesión");
@@ -133,7 +130,101 @@ public class InicioSesion extends JFrame implements ActionListener{
 		panelLateral.add(campoPassword);		
 		panelLateral.add(panelBoton);
 		panelBoton.add(txtBoton);
-		setContentPane(panelPrincipal);		
+		setContentPane(panelPrincipal);	
+		
+		panelBoton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelBoton.setBackground(new Color(157,197,255));
+				panelBoton.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {				
+				panelBoton.setBackground(new Color(255,255,255));
+				panelBoton.setBorder(null);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String username ="", contrasena ="", tipo ="", uInt, cInt;
+				boolean bandera = false;
+				Connection con = ConectarDB();
+				
+				uInt = campoUsername.getText();
+				cInt = campoPassword.getText();
+				
+				System.out.println("Username: " + uInt + " Password: " + cInt);
+				
+				String sql = "select u.username, u.contrasena, u.tipo from usuario u;";
+				java.sql.Statement stmt;
+				ResultSet rs;
+				
+				try {
+					stmt = con.createStatement();
+					rs = stmt.executeQuery(sql);
+					
+					while(rs.next()) {
+						username = rs.getString("username");
+						contrasena = rs.getString("contrasena");
+						tipo = rs.getString("tipo");
+						
+						if(username.equals(uInt) && contrasena.equals(cInt)){
+							bandera = true;
+							break;
+						}
+						
+						//System.out.println("User: " + username + ", Contrasena: " + contrasena + ", Tipo: " + tipo);
+					}
+					
+					if(bandera) {
+						switch(tipo.toLowerCase()) {
+						case "a":
+							VentanaAdmin vNueva = new VentanaAdmin() {
+								public void dispose() {
+									getFrame().setVisible(true);
+									super.dispose();
+								}
+							};
+							
+							vNueva.setVisible(true);
+							dispose();
+							break;
+						case "d":
+							System.out.println("Doctor");
+							break;
+						case "s":
+							System.out.println("Secretaria");
+							break;
+						}
+					}
+					else {
+						System.out.println("Usuario no registrado");
+					}
+					
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+	}
+	
+	public static Connection ConectarDB() {
+Database bd = new Database();
+		
+		try {
+			Connection conexion = bd.getConnection();
+			//System.out.println("Conexion exitosa");
+			return conexion;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private JFrame getFrame() {
+		return this;
 	}
 	
 	public void actionPerformed(ActionEvent e){

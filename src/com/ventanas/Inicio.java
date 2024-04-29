@@ -157,6 +157,10 @@ public class Inicio extends JFrame implements Colores, Fonts{
 			public void mouseExited(MouseEvent e) {
 				btnIngresar.setBackground(COLOR_FONDO);
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Ingresar");
+			}
 		});
 	}	
 }
