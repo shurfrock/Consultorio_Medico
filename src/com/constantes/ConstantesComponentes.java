@@ -33,4 +33,5 @@ public interface ConstantesComponentes {
 	public static final String LISTAR_PACIENTES = "listar pacientes";
 	public static final String BUSCAR = "Buscar";
 	public static final String MOSTRAR_TODO = "Mostrar todo";
+	public static final String ENFERMEDADES = "enfermedades";
 }

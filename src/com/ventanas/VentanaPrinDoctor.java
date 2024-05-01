@@ -22,6 +22,7 @@ public class VentanaPrinDoctor extends JFrame implements Listener, ConstantesCom
 	private AgendarCita agendarCita;
 	private ListadoCitas mostrarCitas;
 	private InfoCuentaSecretaria infoCuenta;
+	private CrearConsulta crearConsulta;
 	
 	public VentanaPrinDoctor() {
 		
@@ -59,6 +60,7 @@ public class VentanaPrinDoctor extends JFrame implements Listener, ConstantesCom
 		listadoPacientes = new ListadoPacientes();
 		agendarCita = new AgendarCita();
 		mostrarCitas = new ListadoCitas();
+		crearConsulta = new CrearConsulta();
 		
 		menuPrincipal.setListener(this);
 		pacientes.setListener(this);
@@ -134,6 +136,7 @@ public class VentanaPrinDoctor extends JFrame implements Listener, ConstantesCom
 			break;
 			
 		case CREAR_CONSULTA:
+			mostrarContenidoPrincipal(crearConsulta);
 			break;
 			
 		case REGRESAR:
