@@ -1,233 +1,331 @@
 package com.ventanas;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JOptionPane;
+import com.componentes.Paciente;
+import com.componentes.Signo;
+import com.componentes.Sintoma;
+import com.componentesVisuales.MyJButton;
+import com.constantes.ConstantesComponentes;
+import com.constantes.Fonts;
+import com.dataAccessObject.PacienteDAOImplementacion;
+import com.dataAccessObject.SignoDAOImplementacion;
+import com.dataAccessObject.SintomaDAOImplementacion;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
-import javax.swing.border.SoftBevelBorder;
+public class InicioSesion extends JPanel implements Fonts, ConstantesComponentes {
 
-import com.componentesVisuales.MyJPasswordField;
-import com.componentesVisuales.MyJTextField;
-import com.dataAccessObject.*;
-import com.mysql.cj.xdevapi.Statement;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-public class InicioSesion extends JFrame implements ActionListener{
-
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
+	private JTextField textField;
+	private JTextField campoSignosSeleccionados;
+	private JTextField campoSintomasSeleccionados;
+	private JTable tablePacientes;
+	private DefaultTableModel modeloTabla;
+	private JPopupMenu popUpMenuSignos;
+	private JPopupMenu popUpMenuSintomas;
+	private List<String> signosSeleccionados;
+	private List<String> sintomasSeleccionados;
 
 	public InicioSesion() {
+		setBackground(new Color(245, 245, 245));
+		setLayout(null);
 		
-		/* Ajustes de inicialización de la ventan principal */
+		JLabel lblCrearConsulta = new JLabel("Consulta Medica");
+		lblCrearConsulta.setFont(FUENTE_SECUNDARIA);
+		lblCrearConsulta.setBounds(401, 11, 178, 30);
+		add(lblCrearConsulta);
 		
-		super("Inicio de sesión");
+		textField = new JTextField();
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setForeground(Color.BLACK);
+		textField.setFont(FUENTE_SECUNDARIA);
+		textField.setColumns(10);
+		textField.setBounds(45, 79, 446, 31);
+		add(textField);
+		
+		JLabel lblNombrePaciente = new JLabel("Nombre del Paciente");
+		lblNombrePaciente.setFont(FUENTE_PRINCIPAL);
+		lblNombrePaciente.setBounds(45, 50, 184, 25);
+		add(lblNombrePaciente);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setForeground(Color.BLACK);
+		btnBuscar.setFont(FUENTE_SECUNDARIA);		
+		btnBuscar.setBounds(527, 79, 97, 31);
+		add(btnBuscar);
+		
+		JLabel lblSigno = new JLabel("Signos");
+		lblSigno.setFont(FUENTE_PRINCIPAL);
+		lblSigno.setBounds(45, 313, 184, 19);
+		add(lblSigno);
+		
+		JLabel lblSintoma = new JLabel("Sintomas");
+		lblSintoma.setFont(FUENTE_PRINCIPAL);
+		lblSintoma.setBounds(45, 376, 184, 19);
+		add(lblSintoma);
+		
+		campoSignosSeleccionados = new JTextField();
+		campoSignosSeleccionados.setEditable(false);
+		campoSignosSeleccionados.setHorizontalAlignment(SwingConstants.CENTER);
+		campoSignosSeleccionados.setForeground(Color.BLACK);
+		campoSignosSeleccionados.setFont(FUENTE_SECUNDARIA);
+		campoSignosSeleccionados.setColumns(10);
+		campoSignosSeleccionados.setBackground(Color.WHITE);
+		campoSignosSeleccionados.setBounds(45, 481, 567, 31);
+		add(campoSignosSeleccionados);
+		
+		JLabel lblSignosSeleccionados = new JLabel("Signos Seleccionados");
+		lblSignosSeleccionados.setFont(FUENTE_PRINCIPAL);
+		lblSignosSeleccionados.setBounds(45, 451, 195, 19);
+		add(lblSignosSeleccionados);
+		
+		campoSintomasSeleccionados = new JTextField();
+		campoSintomasSeleccionados.setHorizontalAlignment(SwingConstants.CENTER);
+		campoSintomasSeleccionados.setForeground(Color.BLACK);
+		campoSintomasSeleccionados.setFont(FUENTE_SECUNDARIA);
+		campoSintomasSeleccionados.setColumns(10);
+		campoSintomasSeleccionados.setBackground(Color.WHITE);
+		campoSintomasSeleccionados.setBounds(45, 553, 567, 31);
+		add(campoSintomasSeleccionados);
+		
+		JLabel lblSintomasSeleccionados = new JLabel("Sintomas Seleccionados");
+		lblSintomasSeleccionados.setFont(FUENTE_PRINCIPAL);
+		lblSintomasSeleccionados.setBounds(45, 523, 221, 19);
+		add(lblSintomasSeleccionados);
+		
+		JButton btnGenerarDiagnostico = new JButton("Generar Diagnostico");
+		btnGenerarDiagnostico.setForeground(Color.BLACK);
+		btnGenerarDiagnostico.setFont(FUENTE_SECUNDARIA);
+		btnGenerarDiagnostico.setBackground(new Color(218, 218, 218));
+		btnGenerarDiagnostico.setBounds(371, 613, 208, 39);
+		add(btnGenerarDiagnostico);
+		
+		modeloTabla = new DefaultTableModel();
+		inicializarModeloTabla();
+		
+		tablePacientes = new JTable(modeloTabla);
+		tablePacientes.setFont(FUENTE_SECUNDARIA);
+		tablePacientes.setRowHeight(30);
+		tablePacientes.setRowMargin(10);
+		tablePacientes.setIntercellSpacing(new Dimension(10,10));
+		tablePacientes.getColumn("Action").setCellRenderer(new MyJButton("Seleccionar"));
+		
+		JScrollPane scrollPane = new JScrollPane(tablePacientes);
+		scrollPane.setBounds(45, 121, 886, 181);
+		add(scrollPane);
+		
+		JButton btnSignos = new JButton("Seleccionar signos");
+		btnSignos.setBounds(45, 343, 208, 30);
+		btnSignos.setFont(FUENTE_SECUNDARIA);
+		add(btnSignos);
+		
+		popUpMenuSignos = new JPopupMenu();
+		popUpMenuSignos.setFont(FUENTE_SECUNDARIA);
+		signosSeleccionados = new ArrayList<>();
+		inicializarSignos();
+		
+		JButton btnSintomas = new JButton("Seleccionar sintomas");
+		btnSintomas.setBounds(45, 406, 208, 30);
+		btnSintomas.setFont(FUENTE_SECUNDARIA);
+		add(btnSintomas);
 
-		setBackground(new Color(255, 255, 255));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 780, 491);
+		popUpMenuSintomas = new JPopupMenu();
+		sintomasSeleccionados = new ArrayList<>();
+		inicializarSintomas();
 		
-		/* Declaración e Instanciacion de objetos */
-		
-		JPanel panelPrincipal = new JPanel();
-		JPanel panelLateral = new JPanel();
-		JPanel panelBoton = new JPanel();
-		
-		JLabel iconoLogin = new JLabel("");
-		JLabel encabezado = new JLabel("Inicio de Sesión");
-		JLabel txtUsername = new JLabel("Username");
-		MyJTextField campoUsername = new MyJTextField();
-		JLabel txtPassword = new JLabel("Password");
-		MyJPasswordField campoPassword = new MyJPasswordField();		
-		campoPassword.setIcono(new ImageIcon(InicioSesion.class.getResource("/com/imagenes/clave-de-usuario.png")));
-		JLabel txtBoton = new JLabel("Ingresar");
-				
-		/* Ajustes visuales de los objetos */
-		
-					/** Panel principal **/
-		panelPrincipal.setForeground(new Color(0, 0, 0));
-		panelPrincipal.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panelPrincipal.setBackground(new Color(255, 255, 255));
-		panelPrincipal.setLayout(null);
-				
-					/** Panel lateral**/
-		panelLateral.setBackground(new Color(50, 81, 205));
-		panelLateral.setBounds(368, 0, 396, 452);
-		panelLateral.setLayout(null);		
-		panelLateral.setBorder(null);
-		
-					/** Icono login **/
-		iconoLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		iconoLogin.setIcon(new ImageIcon(InicioSesion.class.getResource("/com/imagenes/lock.png")));
-		iconoLogin.setBounds(87, 103, 196, 245);
-		
-					/** texto encabezado **/
-		encabezado.setBounds(105, 34, 196, 32);		
-		encabezado.setForeground(Color.WHITE);
-		encabezado.setFont(new Font("Roboto", Font.BOLD, 27));
-		encabezado.setBackground(Color.WHITE);
-		
-					/** Texto Username **/
-		txtUsername.setForeground(Color.BLACK);
-		txtUsername.setBackground(Color.BLACK);
-		txtUsername.setBounds(32, 117, 89, 29);
-		txtUsername.setFont(new Font("Roboto", Font.PLAIN, 16));		
-		
-					/** Campo Username **/
-		campoUsername.setBounds(32, 146, 326, 40);
-		campoUsername.setIcono(new ImageIcon(InicioSesion.class.getResource("/com/imagenes/usuario.png")));
-		campoUsername.setToolTipText("Ingrese su nombre de usuario");
-		campoUsername.setColumns(10);
-		
-					/** Texto Password **/
-		txtPassword.setForeground(Color.BLACK);
-		txtPassword.setBounds(32, 216, 78, 22);
-		txtPassword.setFont(new Font("Roboto", Font.PLAIN, 16));
-		
-					/** Campo Password **/
-		campoPassword.setBounds(32, 240, 326, 40);
-		campoPassword.setToolTipText("Ingrese su contraseña");
-		
-					/** Panel de boton **/
-		panelBoton.setForeground(Color.BLACK);
-		panelBoton.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panelBoton.setBackground(Color.WHITE);
-		panelBoton.setToolTipText("Presione el botón");
-		panelBoton.setBounds(157, 356, 119, 34);
-		panelBoton.setLayout(null);
+		btnSignos.addActionListener(new ActionListener() {
 			
-					/** Texto del boton **/
-		txtBoton.setHorizontalAlignment(SwingConstants.CENTER);
-		txtBoton.setBackground(Color.WHITE);
-		txtBoton.setForeground(Color.BLACK);
-		txtBoton.setBounds(20, 0, 77, 32);
-		txtBoton.setFont(new Font("Roboto", Font.PLAIN, 16));
-		
-		/* Asignación de objetos a los paneles */
-		
-		panelPrincipal.add(panelLateral);
-		panelPrincipal.add(iconoLogin);
-		panelLateral.add(encabezado);		
-		panelLateral.add(txtUsername);
-		panelLateral.add(campoUsername);
-		panelLateral.add(txtPassword);
-		panelLateral.add(campoPassword);		
-		panelLateral.add(panelBoton);
-		panelBoton.add(txtBoton);
-		setContentPane(panelPrincipal);	
-		
-		panelBoton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				panelBoton.setBackground(new Color(157,197,255));
-				panelBoton.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			public void actionPerformed(ActionEvent e) {
+				popUpMenuSignos.show(btnSignos, 0, btnSintomas.getHeight());
 			}
-			@Override
-			public void mouseExited(MouseEvent e) {				
-				panelBoton.setBackground(new Color(255,255,255));
-				panelBoton.setBorder(null);
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				String username ="", contrasena ="", tipo ="", uInt, cInt;
-				boolean bandera = false;
-				Connection con = ConectarDB();
-				
-				uInt = campoUsername.getText();
-				cInt = campoPassword.getText();
-				
-				System.out.println("Username: " + uInt + " Password: " + cInt);
-				
-				String sql = "select u.username, u.contrasena, u.tipo from usuario u;";
-				java.sql.Statement stmt;
-				ResultSet rs;
-				
-				try {
-					stmt = con.createStatement();
-					rs = stmt.executeQuery(sql);
-					
-					while(rs.next()) {
-						username = rs.getString("username");
-						contrasena = rs.getString("contrasena");
-						tipo = rs.getString("tipo");
-						
-						if(username.equals(uInt) && contrasena.equals(cInt)){
-							bandera = true;
-							break;
-						}
-						
-						//System.out.println("User: " + username + ", Contrasena: " + contrasena + ", Tipo: " + tipo);
-					}
-					
-					if(bandera) {
-						switch(tipo.toLowerCase()) {
-						case "a":
-							VentanaAdmin vNueva = new VentanaAdmin() {
-								public void dispose() {
-									getFrame().setVisible(true);
-									super.dispose();
-								}
-							};
-							
-							vNueva.setVisible(true);
-							dispose();
-							break;
-						case "d":
-							System.out.println("Doctor");
-							break;
-						case "s":
-							System.out.println("Secretaria");
-							break;
-						}
-					}
-					else {
-						System.out.println("Usuario no registrado");
-					}
-					
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				
+		});
+		
+		btnSintomas.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				popUpMenuSintomas.show(btnSintomas, 0, btnSintomas.getHeight());
 			}
 		});
 	}
-	
-	public static Connection ConectarDB() {
-Database bd = new Database();
+
+	private void inicializarSignos() {
 		
 		try {
-			Connection conexion = bd.getConnection();
-			//System.out.println("Conexion exitosa");
-			return conexion;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			List<Signo> signos;
+			SignoDAOImplementacion DAO = new SignoDAOImplementacion();
+
+			signos = DAO.consultarTodo();
+
+			if(signos.size() > 0) {				
+				for(Signo signo : signos) {
+					
+					JCheckBoxMenuItem item = new JCheckBoxMenuItem(signo.getNombre());
+					
+					item.addActionListener(new ActionListener() {
+						
+						public void actionPerformed(ActionEvent e) {
+							
+							JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+							
+							if(item.getState()) { // es verdadero
+								
+								signosSeleccionados.add(item.getText());
+								actualizarCampoSignosSeleccionados();
+								
+							}else { // es falso
+								signosSeleccionados.remove(item.getText());
+								actualizarCampoSignosSeleccionados();
+							}
+						}
+					});
+					
+					popUpMenuSignos.add(item);
+				}
+				
+			}else {
+				// falta de implementar
+			}
+			
+		}catch(SQLException e) {
+			mostrarMensajeError(e);
 		}
-		return null;
 	}
 	
-	private JFrame getFrame() {
-		return this;
+	private void inicializarSintomas() {
+
+		try {
+			List<Sintoma> sintomas;
+			SintomaDAOImplementacion DAO = new SintomaDAOImplementacion();
+			
+			sintomas = DAO.consultarTodo();
+			
+			if(sintomas.size() > 0) {
+				
+				for(Sintoma sintoma : sintomas) {
+					
+					JCheckBoxMenuItem item = new JCheckBoxMenuItem(sintoma.getNombre());
+					
+					item.addActionListener(new ActionListener() {
+						
+						public void actionPerformed(ActionEvent e) {
+							
+							JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+							
+							if(item.getState()) { // es verdadero
+								
+								sintomasSeleccionados.add(item.getText());
+								actualizarCampoSintomasSeleccionados();
+								
+							}else { // es falso
+								sintomasSeleccionados.remove(item.getText());
+								actualizarCampoSintomasSeleccionados();
+							}
+							
+						}
+					});
+					
+					popUpMenuSintomas.add(item);
+				}
+				
+			}else {
+				// falta de implementar
+			}
+			
+		}catch(SQLException e) {
+			mostrarMensajeError(e);
+		}
 	}
 	
-	public void actionPerformed(ActionEvent e){
+	private void inicializarModeloTabla() {
 		
+		modeloTabla.addColumn("Nombre completo");
+		modeloTabla.addColumn("Edad");
+		modeloTabla.addColumn("Sexo");
+		modeloTabla.addColumn("CURP");
+		modeloTabla.addColumn("Action");
+		
+		try {
+			List<Paciente> pacientes;
+			String sexo;
+			char sexoX;
+			PacienteDAOImplementacion DAO = new PacienteDAOImplementacion();
+			
+			pacientes = DAO.consultarTodo();
+			
+			for(Paciente p : pacientes) {
+				sexoX = p.getSexo();
+				if(sexoX == 'M') {
+					sexo = "Masculino";
+				}else if(sexoX == 'F') {
+					sexo = "Femenino";
+				}else {
+					sexo = "Otro";
+				}
+				modeloTabla.addRow(new Object[] {p.getNombre() + " " + p.getApellido(), p.getEdad(), sexo, p.getCurp()});
+			}
+			
+		}catch(SQLException e) {
+			mostrarMensajeError(e);
+		}
+		
+	}
+	
+	private void mostrarMensajeError(SQLException e) {
+		JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void actualizarCampoSignosSeleccionados() {
+		
+		String texto;
+		int n, i;
+		texto = "";
+		
+		n = signosSeleccionados.size();
+		i = 0;
+		for(String signo : signosSeleccionados) {
+			texto += signo;
+			
+			if(i < n-1) {
+				texto += ", ";
+			}
+			
+			i++;
+		}
+		
+		campoSignosSeleccionados.setText(texto);
+	}
+	
+	private void actualizarCampoSintomasSeleccionados() {
+		
+		String texto = "";
+		int n, i;
+		
+		n = sintomasSeleccionados.size();
+		i = 0;
+		for(String s : sintomasSeleccionados) {
+			texto += s;
+			
+			if(i < n-1) {
+				texto += ", ";
+			}
+			i++;
+		}
+		
+		campoSintomasSeleccionados.setText(texto);
 	}
 }

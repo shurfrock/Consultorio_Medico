@@ -1,136 +1,331 @@
 package com.ventanas;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
-import java.awt.Font;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JScrollBar;
-import javax.swing.JComboBox;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JOptionPane;
+import com.componentes.Paciente;
+import com.componentes.Signo;
+import com.componentes.Sintoma;
+import com.componentesVisuales.MyJButton;
+import com.constantes.ConstantesComponentes;
+import com.constantes.Fonts;
+import com.dataAccessObject.PacienteDAOImplementacion;
+import com.dataAccessObject.SignoDAOImplementacion;
+import com.dataAccessObject.SintomaDAOImplementacion;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
-public class CrearConsulta extends JPanel {
+public class CrearConsulta extends JPanel implements Fonts, ConstantesComponentes {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private JTextField txtSignos;
-	private JTextField txtSintomas;
-	private JTextField SignosSleccionados;
-	private JTextField Sintomas;
+	private JTextField campoSignosSeleccionados;
+	private JTextField campoSintomasSeleccionados;
+	private JTable tablePacientes;
+	private DefaultTableModel modeloTabla;
+	private JPopupMenu popUpMenuSignos;
+	private JPopupMenu popUpMenuSintomas;
+	private List<String> signosSeleccionados;
+	private List<String> sintomasSeleccionados;
 
-	/**
-	 * Create the panel.
-	 */
 	public CrearConsulta() {
 		setBackground(new Color(245, 245, 245));
 		setLayout(null);
 		
 		JLabel lblCrearConsulta = new JLabel("Consulta Medica");
-		lblCrearConsulta.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
-		lblCrearConsulta.setBounds(230, 10, 224, 30);
+		lblCrearConsulta.setFont(FUENTE_SECUNDARIA);
+		lblCrearConsulta.setBounds(401, 11, 178, 30);
 		add(lblCrearConsulta);
 		
 		textField = new JTextField();
-		textField.setText("Ingrese el Nombre del paciente");
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setForeground(Color.BLACK);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textField.setFont(FUENTE_SECUNDARIA);
 		textField.setColumns(10);
-		textField.setBackground(Color.WHITE);
 		textField.setBounds(45, 79, 446, 31);
 		add(textField);
 		
-		JLabel lblNewLabel_1 = new JLabel("Nombre del Paciente");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(45, 60, 184, 13);
-		add(lblNewLabel_1);
+		JLabel lblNombrePaciente = new JLabel("Nombre del Paciente");
+		lblNombrePaciente.setFont(FUENTE_PRINCIPAL);
+		lblNombrePaciente.setBounds(45, 50, 184, 25);
+		add(lblNombrePaciente);
 		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.setForeground(Color.BLACK);
-		btnBuscar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnBuscar.setBackground(new Color(218, 218, 218));
-		btnBuscar.setBounds(527, 79, 85, 31);
+		btnBuscar.setFont(FUENTE_SECUNDARIA);		
+		btnBuscar.setBounds(527, 79, 97, 31);
 		add(btnBuscar);
 		
-		JList list = new JList();
-		list.setBackground(new Color(221, 221, 221));
-		list.setBounds(45, 130, 550, 100);
-		add(list);
+		JLabel lblSigno = new JLabel("Signos");
+		lblSigno.setFont(FUENTE_PRINCIPAL);
+		lblSigno.setBounds(45, 313, 184, 19);
+		add(lblSigno);
 		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(595, 130, 17, 100);
-		add(scrollBar);
+		JLabel lblSintoma = new JLabel("Sintomas");
+		lblSintoma.setFont(FUENTE_PRINCIPAL);
+		lblSintoma.setBounds(45, 376, 184, 19);
+		add(lblSintoma);
 		
-		txtSignos = new JTextField();
-		txtSignos.setText("Signos");
-		txtSignos.setHorizontalAlignment(SwingConstants.LEFT);
-		txtSignos.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtSignos.setColumns(10);
-		txtSignos.setBounds(45, 281, 194, 30);
-		add(txtSignos);
+		campoSignosSeleccionados = new JTextField();
+		campoSignosSeleccionados.setEditable(false);
+		campoSignosSeleccionados.setHorizontalAlignment(SwingConstants.CENTER);
+		campoSignosSeleccionados.setForeground(Color.BLACK);
+		campoSignosSeleccionados.setFont(FUENTE_SECUNDARIA);
+		campoSignosSeleccionados.setColumns(10);
+		campoSignosSeleccionados.setBackground(Color.WHITE);
+		campoSignosSeleccionados.setBounds(45, 481, 567, 31);
+		add(campoSignosSeleccionados);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(237, 281, 29, 30);
-		add(comboBox_1);
+		JLabel lblSignosSeleccionados = new JLabel("Signos Seleccionados");
+		lblSignosSeleccionados.setFont(FUENTE_PRINCIPAL);
+		lblSignosSeleccionados.setBounds(45, 451, 195, 19);
+		add(lblSignosSeleccionados);
 		
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Signos");
-		lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1_1_1.setBounds(45, 258, 184, 19);
-		add(lblNewLabel_1_1_1_1);
+		campoSintomasSeleccionados = new JTextField();
+		campoSintomasSeleccionados.setHorizontalAlignment(SwingConstants.CENTER);
+		campoSintomasSeleccionados.setForeground(Color.BLACK);
+		campoSintomasSeleccionados.setFont(FUENTE_SECUNDARIA);
+		campoSintomasSeleccionados.setColumns(10);
+		campoSintomasSeleccionados.setBackground(Color.WHITE);
+		campoSintomasSeleccionados.setBounds(45, 553, 567, 31);
+		add(campoSintomasSeleccionados);
 		
-		txtSintomas = new JTextField();
-		txtSintomas.setText("Sintomas");
-		txtSintomas.setHorizontalAlignment(SwingConstants.LEFT);
-		txtSintomas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtSintomas.setColumns(10);
-		txtSintomas.setBounds(45, 344, 194, 30);
-		add(txtSintomas);
-		
-		JComboBox comboBox_1_1 = new JComboBox();
-		comboBox_1_1.setBounds(237, 344, 29, 30);
-		add(comboBox_1_1);
-		
-		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Sintomas");
-		lblNewLabel_1_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1_1_1_1.setBounds(45, 321, 184, 19);
-		add(lblNewLabel_1_1_1_1_1);
-		
-		SignosSleccionados = new JTextField();
-		SignosSleccionados.setHorizontalAlignment(SwingConstants.CENTER);
-		SignosSleccionados.setForeground(Color.BLACK);
-		SignosSleccionados.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		SignosSleccionados.setColumns(10);
-		SignosSleccionados.setBackground(Color.WHITE);
-		SignosSleccionados.setBounds(45, 403, 567, 31);
-		add(SignosSleccionados);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Signos Seleccionados");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1.setBounds(45, 384, 184, 19);
-		add(lblNewLabel_1_1);
-		
-		Sintomas = new JTextField();
-		Sintomas.setHorizontalAlignment(SwingConstants.CENTER);
-		Sintomas.setForeground(Color.BLACK);
-		Sintomas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		Sintomas.setColumns(10);
-		Sintomas.setBackground(Color.WHITE);
-		Sintomas.setBounds(45, 463, 567, 31);
-		add(Sintomas);
-		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Sintomas Seleccionados");
-		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1_1_1.setBounds(45, 444, 184, 19);
-		add(lblNewLabel_1_1_1);
+		JLabel lblSintomasSeleccionados = new JLabel("Sintomas Seleccionados");
+		lblSintomasSeleccionados.setFont(FUENTE_PRINCIPAL);
+		lblSintomasSeleccionados.setBounds(45, 523, 221, 19);
+		add(lblSintomasSeleccionados);
 		
 		JButton btnGenerarDiagnostico = new JButton("Generar Diagnostico");
 		btnGenerarDiagnostico.setForeground(Color.BLACK);
-		btnGenerarDiagnostico.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnGenerarDiagnostico.setFont(FUENTE_SECUNDARIA);
 		btnGenerarDiagnostico.setBackground(new Color(218, 218, 218));
-		btnGenerarDiagnostico.setBounds(216, 521, 208, 39);
+		btnGenerarDiagnostico.setBounds(371, 613, 208, 39);
 		add(btnGenerarDiagnostico);
+		
+		modeloTabla = new DefaultTableModel();
+		inicializarModeloTabla();
+		
+		tablePacientes = new JTable(modeloTabla);
+		tablePacientes.setFont(FUENTE_SECUNDARIA);
+		tablePacientes.setRowHeight(30);
+		tablePacientes.setRowMargin(10);
+		tablePacientes.setIntercellSpacing(new Dimension(10,10));
+		tablePacientes.getColumn("Action").setCellRenderer(new MyJButton("Seleccionar"));
+		
+		JScrollPane scrollPane = new JScrollPane(tablePacientes);
+		scrollPane.setBounds(45, 121, 886, 181);
+		add(scrollPane);
+		
+		JButton btnSignos = new JButton("Seleccionar signos");
+		btnSignos.setBounds(45, 343, 208, 30);
+		btnSignos.setFont(FUENTE_SECUNDARIA);
+		add(btnSignos);
+		
+		popUpMenuSignos = new JPopupMenu();
+		popUpMenuSignos.setFont(FUENTE_SECUNDARIA);
+		signosSeleccionados = new ArrayList<>();
+		inicializarSignos();
+		
+		JButton btnSintomas = new JButton("Seleccionar sintomas");
+		btnSintomas.setBounds(45, 406, 208, 30);
+		btnSintomas.setFont(FUENTE_SECUNDARIA);
+		add(btnSintomas);
 
+		popUpMenuSintomas = new JPopupMenu();
+		sintomasSeleccionados = new ArrayList<>();
+		inicializarSintomas();
+		
+		btnSignos.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				popUpMenuSignos.show(btnSignos, 0, btnSintomas.getHeight());
+			}
+		});
+		
+		btnSintomas.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				popUpMenuSintomas.show(btnSintomas, 0, btnSintomas.getHeight());
+			}
+		});
+	}
+
+	private void inicializarSignos() {
+		
+		try {
+			List<Signo> signos;
+			SignoDAOImplementacion DAO = new SignoDAOImplementacion();
+
+			signos = DAO.consultarTodo();
+
+			if(signos.size() > 0) {				
+				for(Signo signo : signos) {
+					
+					JCheckBoxMenuItem item = new JCheckBoxMenuItem(signo.getNombre());
+					
+					item.addActionListener(new ActionListener() {
+						
+						public void actionPerformed(ActionEvent e) {
+							
+							JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+							
+							if(item.getState()) { // es verdadero
+								
+								signosSeleccionados.add(item.getText());
+								actualizarCampoSignosSeleccionados();
+								
+							}else { // es falso
+								signosSeleccionados.remove(item.getText());
+								actualizarCampoSignosSeleccionados();
+							}
+						}
+					});
+					
+					popUpMenuSignos.add(item);
+				}
+				
+			}else {
+				// falta de implementar
+			}
+			
+		}catch(SQLException e) {
+			mostrarMensajeError(e);
+		}
+	}
+	
+	private void inicializarSintomas() {
+
+		try {
+			List<Sintoma> sintomas;
+			SintomaDAOImplementacion DAO = new SintomaDAOImplementacion();
+			
+			sintomas = DAO.consultarTodo();
+			
+			if(sintomas.size() > 0) {
+				
+				for(Sintoma sintoma : sintomas) {
+					
+					JCheckBoxMenuItem item = new JCheckBoxMenuItem(sintoma.getNombre());
+					
+					item.addActionListener(new ActionListener() {
+						
+						public void actionPerformed(ActionEvent e) {
+							
+							JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+							
+							if(item.getState()) { // es verdadero
+								
+								sintomasSeleccionados.add(item.getText());
+								actualizarCampoSintomasSeleccionados();
+								
+							}else { // es falso
+								sintomasSeleccionados.remove(item.getText());
+								actualizarCampoSintomasSeleccionados();
+							}
+							
+						}
+					});
+					
+					popUpMenuSintomas.add(item);
+				}
+				
+			}else {
+				// falta de implementar
+			}
+			
+		}catch(SQLException e) {
+			mostrarMensajeError(e);
+		}
+	}
+	
+	private void inicializarModeloTabla() {
+		
+		modeloTabla.addColumn("Nombre completo");
+		modeloTabla.addColumn("Edad");
+		modeloTabla.addColumn("Sexo");
+		modeloTabla.addColumn("CURP");
+		modeloTabla.addColumn("Action");
+		
+		try {
+			List<Paciente> pacientes;
+			String sexo;
+			char sexoX;
+			PacienteDAOImplementacion DAO = new PacienteDAOImplementacion();
+			
+			pacientes = DAO.consultarTodo();
+			
+			for(Paciente p : pacientes) {
+				sexoX = p.getSexo();
+				if(sexoX == 'M') {
+					sexo = "Masculino";
+				}else if(sexoX == 'F') {
+					sexo = "Femenino";
+				}else {
+					sexo = "Otro";
+				}
+				modeloTabla.addRow(new Object[] {p.getNombre() + " " + p.getApellido(), p.getEdad(), sexo, p.getCurp()});
+			}
+			
+		}catch(SQLException e) {
+			mostrarMensajeError(e);
+		}
+		
+	}
+	
+	private void mostrarMensajeError(SQLException e) {
+		JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void actualizarCampoSignosSeleccionados() {
+		
+		String texto;
+		int n, i;
+		texto = "";
+		
+		n = signosSeleccionados.size();
+		i = 0;
+		for(String signo : signosSeleccionados) {
+			texto += signo;
+			
+			if(i < n-1) {
+				texto += ", ";
+			}
+			
+			i++;
+		}
+		
+		campoSignosSeleccionados.setText(texto);
+	}
+	
+	private void actualizarCampoSintomasSeleccionados() {
+		
+		String texto = "";
+		int n, i;
+		
+		n = sintomasSeleccionados.size();
+		i = 0;
+		for(String s : sintomasSeleccionados) {
+			texto += s;
+			
+			if(i < n-1) {
+				texto += ", ";
+			}
+			i++;
+		}
+		
+		campoSintomasSeleccionados.setText(texto);
 	}
 }

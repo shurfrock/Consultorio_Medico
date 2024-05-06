@@ -10,6 +10,7 @@ public class Paciente implements ConstantesComponentes{
 	private String estadoCivil;
 	private String domicilio;
 	private String curp;
+	private String id;
 	
 	private boolean esSexoValido(char sexo) {
 		return sexo == MASCULINO || sexo == FEMENINO ? true : false;
@@ -24,7 +25,7 @@ public class Paciente implements ConstantesComponentes{
 	}
 	
 	public Paciente(String nombre, String apellido, short edad, char sexo, String estadoCivil,
-			String domicilio, String curp) {
+			String domicilio, String curp, String id) {
 		
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -42,6 +43,7 @@ public class Paciente implements ConstantesComponentes{
 		this.estadoCivil = estadoCivil;
 		this.domicilio = domicilio;
 		this.curp = curp;
+		this.id = id;
 	}
 	
 	public void setNombre(String nombre) {
@@ -96,8 +98,8 @@ public class Paciente implements ConstantesComponentes{
 		return edad;
 	}
 	
-	public String getSexo() {
-		return this.sexo == MASCULINO ? "MASCULINO" : "FEMENINO";
+	public char getSexo() {
+		return this.sexo;
 	}
 	
 	public String getEstadoCivil() {
@@ -110,5 +112,9 @@ public class Paciente implements ConstantesComponentes{
 	
 	public String getCurp() {
 		return curp;
+	}
+	
+	public String getId() {
+		return this.id;
 	}
 }

@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Enfermedad {
 	
+	private int id;
 	private String nombre;
 	private List<Signo> signos;
 	private List<Sintoma> sintomas;	
@@ -11,6 +12,11 @@ public class Enfermedad {
 		this.nombre = nombre;
 		this.signos = signos;
 		this.sintomas = sintomas;
+	}
+	
+	public Enfermedad(int id, String nombre) {
+		this.id = id;
+		this.nombre = nombre;
 	}
 	
 	public void setEnfermedad(String nombre) {
@@ -23,6 +29,10 @@ public class Enfermedad {
 	
 	public void setSintomas(List<Sintoma> sintomas) {
 		this.sintomas = sintomas;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	public String getNombre() {
